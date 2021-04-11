@@ -1,0 +1,56 @@
+<nz-layout class="app-layout">
+    <nz-sider class="menu-sidebar"
+              nzCollapsible
+              nzWidth="256px"
+              nzBreakpoint="md"
+              [(nzCollapsed)]="isCollapsed"
+              [nzTrigger]="null">
+      <div class="sidebar-logo">
+          <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo">
+          <h1>华农采购</h1>
+      </div>
+      <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+        <li nz-submenu nzOpen nzTitle="管理中心" nzIcon="dashboard">
+          <ul>
+            <li nz-menu-item nzMatchRouter>
+              <a routerLink="user">用户管理</a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
+              <a routerLink="item">商品管理</a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
+              <a routerLink="order">订单管理</a>
+            </li>
+          </ul>
+        </li>
+        <li nz-submenu nzOpen nzTitle="个人中心" nzIcon="form">
+          <ul>
+            <li nz-menu-item nzMatchRouter>
+              <a routerLink="profile">账号管理</a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
+              <a routerLink="myorder">我的订单</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nz-sider>
+    <nz-layout>
+      <nz-header>
+        <div class="app-header">
+          <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+              <i class="trigger"
+                 nz-icon
+                 [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+              ></i>
+          </span>
+        </div>
+      </nz-header>
+      <nz-content>
+        <div class="inner-content">
+          <router-outlet></router-outlet>
+        </div>
+      </nz-content>
+    </nz-layout>
+  </nz-layout>
+  
