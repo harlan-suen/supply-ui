@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
-
+import { AuthService } from '../service/auth.service';
+import { Register } from '../models/register';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -10,17 +10,6 @@ import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
 })
 export class RegisterComponent implements OnInit {
   validateForm!: FormGroup;
-  captchaTooltipIcon: NzFormTooltipIcon = {
-    type: 'info-circle',
-    theme: 'twotone'
-  };
-
-  submitForm(): void {
-    for (const i in this.validateForm.controls) {
-      this.validateForm.controls[i].markAsDirty();
-      this.validateForm.controls[i].updateValueAndValidity();
-    }
-  }
 
   updateConfirmValidator(): void {
     /** wait for refresh value */
@@ -34,25 +23,36 @@ export class RegisterComponent implements OnInit {
       return { confirm: true, error: true };
     }
     return {};
-  };
-
-  getCaptcha(e: MouseEvent): void {
-    e.preventDefault();
   }
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private authService: AuthService) {}
+
+  submitForm(): void {
+    // tslint:disable-next-line: forin
+    for (const i in this.validateForm.controls) {
+    this.validateForm.controls[i].markAsDirty();
+    this.validateForm.controls[i].updateValueAndValidity();
+  }
+    console.log(this.validateForm.value);
+    const data: Register = {
+      username: this.validateForm.value.username,
+      password: this.validateForm.value.password,
+      role: this.validateForm.value.role,
+      phoneNumber: this.validateForm.value.phoneNumber,
+    };
+    console.log(data);
+    const res = this.authService.register(data);
+    console.log(res);
+}
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
-      email: [null, [Validators.email, Validators.required]],
+      username: [null, [Validators.required]],
       password: [null, [Validators.required]],
       checkPassword: [null, [Validators.required, this.confirmationValidator]],
-      nickname: [null, [Validators.required]],
+      role: [null, Validators.required],
       phoneNumberPrefix: ['+86'],
       phoneNumber: [null, [Validators.required]],
-      website: [null, [Validators.required]],
-      captcha: [null, [Validators.required]],
-      agree: [false]
     });
   }
 }
