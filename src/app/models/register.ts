@@ -2,7 +2,8 @@ export interface Register {
   username: string;
   password: string;
   role: number;
-  phoneNumber: string;
+  phone: string;
+  orgId: number;
 }
 
 export interface Login {

@@ -69,13 +69,25 @@
     </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="phoneNumber" nzRequired
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="orgId"
+        >组织ID</nz-form-label
+      >
+      <nz-form-control
+        [nzSm]="14"
+        [nzXs]="24"
+        nzErrorTip="请输入组织ID！"
+      >
+        <input nz-input formControlName="orgId" id="orgId" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="phone" nzRequired
         >手机号</nz-form-label
       >
       <nz-form-control
         [nzSm]="14"
         [nzXs]="24"
-        [nzValidateStatus]="validateForm.controls['phoneNumber']"
+        [nzValidateStatus]="validateForm.controls['phone']"
         nzErrorTip="请输入手机号"
       >
         <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate">
@@ -84,7 +96,7 @@
               <nz-option nzLabel="+86" nzValue="+86"></nz-option>
             </nz-select>
           </ng-template>
-          <input formControlName="phoneNumber" id="'phoneNumber'" nz-input />
+          <input formControlName="phone" id="'phone'" nz-input />
         </nz-input-group>
       </nz-form-control>
     </nz-form-item>

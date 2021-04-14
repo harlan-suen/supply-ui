@@ -17,11 +17,11 @@ export class AuthService {
 
   register(data: Register): Observable<any> {
     console.log(data);
-    return this.http.post(this.authUrl, data, this.httpOptions);
+    return this.http.post(this.authUrl + '/register', data, this.httpOptions);
   }
 
   login(data: Login): Observable<any> {
-    return this.http.post(this.authUrl, data, this.httpOptions);
+    return this.http.post(this.authUrl + '/login', data, this.httpOptions);
   }
 
   test(): Observable<any> {

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Login } from '../models/register';
 import { AuthService } from '../service/auth.service';
 
 @Component({
@@ -16,18 +18,30 @@ export class LoginComponent implements OnInit {
       this.validateForm.controls[i].markAsDirty();
       this.validateForm.controls[i].updateValueAndValidity();
     }
-    // tslint:disable-next-line: deprecation
-    this.authService.test().subscribe({
-      next: (m: any) => console.log(m),
-      error: (error: any) => console.log(error),
-    });
+    if (this.validateForm.valid) {
+      const data: Login = {
+        username: this.validateForm.value.username,
+        password: this.validateForm.value.password
+      };
+      // tslint:disable-next-line: deprecation
+      this.authService.login(data).subscribe({
+        next: resp => {
+          if (resp.code === 200) {
+            this.router.navigate(['/admin/user']);
+          }else {
+            console.log(resp.msg);
+          }
+        },
+        error: (error: any) => console.log(error.statusText),
+      });
+    }
   }
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {}
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
-      userName: [null, [Validators.required]],
+      username: [null, [Validators.required]],
       password: [null, [Validators.required]],
     });
   }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../service/auth.service';
 import { Register } from '../models/register';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -25,7 +26,7 @@ export class RegisterComponent implements OnInit {
     return {};
   }
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {}
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {}
 
   submitForm(): void {
     // tslint:disable-next-line: forin
@@ -33,16 +34,33 @@ export class RegisterComponent implements OnInit {
     this.validateForm.controls[i].markAsDirty();
     this.validateForm.controls[i].updateValueAndValidity();
   }
-    console.log(this.validateForm.value);
-    const data: Register = {
+    if (this.validateForm.valid) {
+      const data: Register = {
       username: this.validateForm.value.username,
       password: this.validateForm.value.password,
       role: this.validateForm.value.role,
-      phoneNumber: this.validateForm.value.phoneNumber,
+      phone: this.validateForm.value.phone,
+      orgId: this.validateForm.value.orgId,
     };
-    console.log(data);
-    const res = this.authService.register(data);
-    console.log(res);
+
+      // tslint:disable-next-line: deprecation
+      this.authService.register(data).subscribe({
+        next: resp => {
+          if (resp.code === 200) {
+            this.router.navigate(['/success'], {queryParams: 
+              {
+                title: '注册成功！',
+                subTitle: '尊敬的' + data.username + '您的账号' + data.phone + '已注册成功，请使用用户名和密码登陆',
+                goTitle: '去登陆',
+                goUrl: '/login',
+                backTitle: '重新注册',
+                backUrl: '/register',
+              }});
+          }
+        },
+        error: err => console.log(err)
+      });
+  }
 }
 
   ngOnInit(): void {
@@ -52,7 +70,8 @@ export class RegisterComponent implements OnInit {
       checkPassword: [null, [Validators.required, this.confirmationValidator]],
       role: [null, Validators.required],
       phoneNumberPrefix: ['+86'],
-      phoneNumber: [null, [Validators.required]],
+      phone: [null, [Validators.required]],
+      orgId: [null, [Validators.required]]
     });
   }
 }
