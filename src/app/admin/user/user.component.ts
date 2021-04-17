@@ -1,11 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
-interface ItemData {
-  id: string;
-  name: string;
-  age: string;
-  address: string;
-}
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-user',
@@ -13,37 +7,54 @@ interface ItemData {
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-  i = 0;
-  editId: string | null = null;
-  listOfData: ItemData[] = [];
-
+  editCache: { [key: string]: { edit: boolean; data: User } } = {};
+  listOfData: User[] = [];
+  roleMap: Map<string, string> = new Map([
+    ['1', '居民'],
+    ['2', '社区负责人'],
+    ['3', '商超'],
+    ['4', '供应商'],
+  ]);
   startEdit(id: string): void {
-    this.editId = id;
+    this.editCache[id].edit = true;
   }
 
-  stopEdit(): void {
-    this.editId = null;
+  cancelEdit(id: string): void {
+    const index = this.listOfData.findIndex(item => item.id === id);
+    this.editCache[id] = {
+      data: { ...this.listOfData[index] },
+      edit: false
+    };
   }
 
-  addRow(): void {
-    this.listOfData = [
-      ...this.listOfData,
-      {
-        id: `${this.i}`,
-        name: `Edward King ${this.i}`,
-        age: '32',
-        address: `London, Park Lane no. ${this.i}`
-      }
-    ];
-    this.i++;
+  saveEdit(id: string): void {
+    const index = this.listOfData.findIndex(item => item.id === id);
+    Object.assign(this.listOfData[index], this.editCache[id].data);
+    this.editCache[id].edit = false;
   }
 
-  deleteRow(id: string): void {
-    this.listOfData = this.listOfData.filter(d => d.id !== id);
+  updateEditCache(): void {
+    this.listOfData.forEach(item => {
+      this.editCache[item.id] = {
+        edit: false,
+        data: { ...item }
+      };
+    });
   }
 
   ngOnInit(): void {
-    this.addRow();
-    this.addRow();
+    const data = [];
+    for (let i = 0; i < 100; i++) {
+      data.push({
+        id: `${i}`,
+        username: `harlan${i}`,
+        password: 'vs1234',
+        role: '1',
+        phone: '10086',
+        orgId: 10010,
+      });
+    }
+    this.listOfData = data;
+    this.updateEditCache();
   }
 }

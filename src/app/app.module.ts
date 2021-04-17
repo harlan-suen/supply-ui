@@ -39,6 +39,8 @@ import { AdminComponent } from './admin/admin.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NzResultModule } from 'ng-zorro-antd/result';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 // Component
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -111,7 +113,9 @@ import { MyorderComponent } from './admin/myorder/myorder.component';
     NzPopconfirmModule,
     NzUploadModule,
     NzLayoutModule,
-    NzResultModule
+    NzResultModule,
+    NzSkeletonModule,
+    NzTypographyModule
   ],
   providers: [],
   bootstrap: [AppComponent]

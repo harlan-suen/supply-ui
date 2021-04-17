@@ -24,6 +24,7 @@ const routes: Routes = [
     path: 'admin',
     component: AdminComponent,
     children: [
+      {path: '', pathMatch: 'full', redirectTo: 'user'},
       {path: 'user', component: UserComponent},
       {path: 'item', component: ItemComponent},
       {path: 'order', component: OrderComponent},
