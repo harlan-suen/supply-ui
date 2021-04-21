@@ -12,6 +12,9 @@ import { FailedComponent } from './result/failed/failed.component';
 import { NotfoundComponent } from './result/notfound/notfound.component';
 import { SuccessComponent } from './result/success/success.component';
 import { UnauthComponent } from './result/unauth/unauth.component';
+import { ShoppingComponent } from './shopping/shopping.component';
+import { AllComponent } from './shopping/all/all.component';
+import { ItemCardComponent } from './shopping/item-card/item-card.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: '/login'},
@@ -35,6 +38,15 @@ const routes: Routes = [
       {path: 'unauth', pathMatch: 'full', component: UnauthComponent},
       {path: '**', pathMatch: 'full', component: NotfoundComponent}
     ],
+  },
+  {
+    path: 'shopping',
+    component: ShoppingComponent,
+    children: [
+      {path: '', pathMatch: 'full', redirectTo: 'all'},
+      {path: 'all', component: AllComponent},
+      {path: 'item', component: ItemCardComponent},
+    ]
   },
   {path: '**', pathMatch: 'full', component: NotfoundComponent}
 ];

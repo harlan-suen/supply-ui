@@ -41,6 +41,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { NzCarouselModule } from 'ng-zorro-antd/carousel';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
 // Component
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -54,6 +56,9 @@ import { NotfoundComponent } from './result/notfound/notfound.component';
 import { FailedComponent } from './result/failed/failed.component';
 import { ProfileComponent } from './admin/profile/profile.component';
 import { MyorderComponent } from './admin/myorder/myorder.component';
+import { ShoppingComponent } from './shopping/shopping.component';
+import { AllComponent } from './shopping/all/all.component';
+import { ItemCardComponent } from './shopping/item-card/item-card.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -68,7 +73,10 @@ import { MyorderComponent } from './admin/myorder/myorder.component';
     NotfoundComponent,
     FailedComponent,
     ProfileComponent,
-    MyorderComponent
+    MyorderComponent,
+    ShoppingComponent,
+    AllComponent,
+    ItemCardComponent
   ],
   imports: [
     // Ng Module
@@ -115,7 +123,9 @@ import { MyorderComponent } from './admin/myorder/myorder.component';
     NzLayoutModule,
     NzResultModule,
     NzSkeletonModule,
-    NzTypographyModule
+    NzTypographyModule,
+    NzCarouselModule,
+    NzSpaceModule
   ],
   providers: [],
   bootstrap: [AppComponent]
