@@ -5,3 +5,7 @@ button {
 .modal-img:hover {
   cursor: pointer;
 }
+
+.stock-icon {
+  font-size: 20px;
+}

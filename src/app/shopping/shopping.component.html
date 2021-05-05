@@ -15,14 +15,14 @@
             <a routerLink="grocery">日用百货</a>
           </li>
           <li nz-menu-item class="space"></li>
-          <a nz-dropdown [nzDropdownMenu]="menu" class="right-menu">
+          <a nz-dropdown [nzDropdownMenu]="menu">
             <nz-avatar nzSize="large" nzIcon="user"></nz-avatar>
             <i nz-icon nzType="down"></i>
           </a>
           <nz-dropdown-menu #menu="nzDropdownMenu">
             <ul nz-menu nzSelectable>
               <li nz-menu-item>
-                <a routerLink="profile">个人中心</a>
+                <a routerLink="user-info">个人中心</a>
               </li>
               <li nz-menu-item>
                 <a routerLink="/login">退出登陆</a>
@@ -30,7 +30,10 @@
             </ul>
           </nz-dropdown-menu>
           <li nz-menu-item>
-            <a routerLink="cart">购物车</a>
+            <a routerLink="cart">
+              购物车
+              <nz-badge nzStandalone [nzCount]="this.cartCount"></nz-badge>
+            </a>
           </li>
           <li nz-menu-item>
             <a routerLink="myorder">我的订单</a>

@@ -1,8 +1,17 @@
 export interface User {
-    id: string;
+    id: number;
     username: string;
     password: string;
-    role: string;
+    role: number;
     phone: string;
     orgId: number;
+    marketId: number;
+    imgUrl: string;
+}
+
+export interface UpdateUserReq {
+    username: string;
+    password: string;
+    phone: string;
+    imgUrl: string;
 }

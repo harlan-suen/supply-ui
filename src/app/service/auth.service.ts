@@ -23,8 +23,15 @@ export class AuthService {
     return this.http.post(this.authUrl + '/login', data, this.httpOptions);
   }
 
-  test(): Observable<any> {
-    const url = 'https://random-word-api.herokuapp.com/word?number=1';
-    return this.http.get(url);
+  setToken(token: string): void {
+    localStorage.setItem('token', token);
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  loading(): Observable<any> {
+    return this.http.get('/api/loading');
   }
 }

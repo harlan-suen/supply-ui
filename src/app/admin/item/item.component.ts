@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Item } from 'src/app/models/item';
+import { ItemService } from 'src/app/service/item.service';
 
 @Component({
   selector: 'app-item',
@@ -10,36 +11,91 @@ import { Item } from 'src/app/models/item';
 })
 export class ItemComponent implements OnInit {
   listOfData: Item[] = [];
-
+  marketId = 0;
   modalData: Item = {
-    id: 1,
+    id: 0,
+    marketId: this.marketId,
     name: '',
     price: 0,
     stock: 0,
-    onSale: false,
-    imgUrl: ''
+    category: 0,
+    imgUrl: '',
+    onSale: true
   };
   isVisible = false;
+  isAdd = false;
   formatterRMB = (value: number) => `¥ ${value}`;
   parserRMB = (value: string) => value.replace('¥ ', '');
-  constructor(private msg: NzMessageService) {}
 
-  showModal(id: number): void {
-    const res = this.listOfData.find(item => item.id === id);
-    if (res !== undefined) {
-      this.modalData = JSON.parse(JSON.stringify(res));
-    }
+  constructor(private msg: NzMessageService, private itemService: ItemService) {}
+
+  editItem(id: number): void {
+      const res = this.listOfData.find(item => item.id === id);
+      if (res !== undefined) {
+        this.modalData = JSON.parse(JSON.stringify(res));
+        this.isVisible = true;
+        this.isAdd = false;
+      }
+  }
+  addItem(): void {
+    this.modalData = {
+      id: 0,
+      marketId: this.marketId,
+      name: '',
+      price: 0,
+      stock: 0,
+      category: 0,
+      imgUrl: '',
+      onSale: true
+    };
     this.isVisible = true;
+    this.isAdd = true;
   }
 
-  delete(id: number): void {
-    this.listOfData = this.listOfData.filter(item => item.id !== id);
+  toggle(id: number, onSale: boolean): void {
+    // tslint:disable-next-line: deprecation
+    this.itemService.toggleItem(id, onSale).subscribe({
+      next: resp => {
+        if (resp.code === 200) {
+          this.msg.success('操作成功');
+          const index = this.listOfData.findIndex(item => item.id === id);
+          this.listOfData[index].onSale = onSale;
+        }
+      },
+      error: err => this.msg.error(err.resp.msg)
+    });
   }
+
   handleOk(): void {
-    if (this.modalData.name !== '') {
-      this.isVisible = false;
-      // TODO：http put
+    if (this.modalData.name === '') {
+     this.msg.error('商品名不能为空');
+     return;
     }
+    if (this.isAdd) {
+      // tslint:disable-next-line: deprecation
+      this.itemService.addItem(this.modalData).subscribe({
+        next: resp => {
+          if (resp.code === 200) {
+            this.msg.success('商品添加成功');
+          }else {
+            this.msg.error(resp.msg);
+          }
+        }
+      });
+    }else {
+      this.itemService.updateItem(this.modalData.id, this.modalData).subscribe({
+        next: resp => {
+          if (resp.code === 200) {
+            this.msg.success('商品更新成功');
+          }else {
+            this.msg.error(resp.msg);
+          }
+        }
+      });
+    }
+    const index = this.listOfData.findIndex(item => item.id === this.modalData.id);
+    this.listOfData[index] = JSON.parse(JSON.stringify(this.modalData));
+    this.isVisible = false;
   }
 
   handleCancel(): void {
@@ -47,28 +103,28 @@ export class ItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const data = [];
-    for (let i = 0; i < 100; i++) {
-      data.push({
-        id: i,
-        name: `口罩${i}`,
-        price: 3.99 + i,
-        stock: 300,
-        imgUrl: 'assets/item.jpeg',
-        onSale: true
+    const id = localStorage.getItem('id');
+    if (id != null) {
+      this.marketId = +id;
+      // tslint:disable-next-line: deprecation
+      this.itemService.getItems(this.marketId).subscribe({
+        next: resp => {
+          if (resp.code === 200) {
+            this.listOfData = resp.data;
+          }
+        }
       });
+    }else {
+      this.msg.error('获取商超ID失败');
     }
-    this.listOfData = data;
   }
 
   handleChange(info: NzUploadChangeParam): void {
-    if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList);
-    }
     if (info.file.status === 'done') {
-      this.msg.success(`${info.file.name} file uploaded successfully`);
+      this.msg.success(`${info.file.name}上传成功`);
+      this.modalData.imgUrl = 'http://shc.is135282.com/' + info.file.response.data;
     } else if (info.file.status === 'error') {
-      this.msg.error(`${info.file.name} file upload failed.`);
+      this.msg.error(`${info.file.name}上传失败`);
     }
   }
 }

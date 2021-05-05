@@ -47,7 +47,7 @@ export class RegisterComponent implements OnInit {
       this.authService.register(data).subscribe({
         next: resp => {
           if (resp.code === 200) {
-            this.router.navigate(['/success'], {queryParams: 
+            this.router.navigate(['/success'], {queryParams:
               {
                 title: '注册成功！',
                 subTitle: '尊敬的' + data.username + '您的账号' + data.phone + '已注册成功，请使用用户名和密码登陆',

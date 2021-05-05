@@ -5,7 +5,7 @@ import { ItemComponent } from './admin/item/item.component';
 import { OrderComponent } from './admin/order/order.component';
 import { UserComponent } from './admin/user/user.component';
 import { LoginComponent } from './login/login.component';
-import { MyorderComponent } from './admin/myorder/myorder.component';
+import { MyorderComponent } from './shopping/myorder/myorder.component';
 import { ProfileComponent } from './admin/profile/profile.component';
 import { RegisterComponent } from './register/register.component';
 import { FailedComponent } from './result/failed/failed.component';
@@ -15,6 +15,14 @@ import { UnauthComponent } from './result/unauth/unauth.component';
 import { ShoppingComponent } from './shopping/shopping.component';
 import { AllComponent } from './shopping/all/all.component';
 import { ItemCardComponent } from './shopping/item-card/item-card.component';
+import { FreshComponent } from './shopping/fresh/fresh.component';
+import { GroceryComponent } from './shopping/grocery/grocery.component';
+import { CartComponent } from './shopping/cart/cart.component';
+import { CheckoutComponent } from './shopping/checkout/checkout.component';
+import { LoadingComponent } from './loading/loading.component';
+import { TransportComponent } from './admin/transport/transport.component';
+import { TransInComponent } from './admin/trans-in/trans-in.component';
+import { StockComponent } from './admin/stock/stock.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: '/login'},
@@ -23,19 +31,22 @@ const routes: Routes = [
   {path: 'failed', pathMatch: 'full', component: FailedComponent},
   {path: 'success', pathMatch: 'full', component: SuccessComponent},
   {path: 'unauth', pathMatch: 'full', component: UnauthComponent},
+  {path: 'loading', pathMatch: 'full', component: LoadingComponent},
   {
     path: 'admin',
     component: AdminComponent,
     children: [
-      {path: '', pathMatch: 'full', redirectTo: 'user'},
+      {path: '', pathMatch: 'full', redirectTo: 'profile'},
       {path: 'user', component: UserComponent},
       {path: 'item', component: ItemComponent},
       {path: 'order', component: OrderComponent},
       {path: 'profile', component: ProfileComponent},
-      {path: 'myorder', component: MyorderComponent},
-      {path: 'failed', pathMatch: 'full', component: FailedComponent},
-      {path: 'success', pathMatch: 'full', component: SuccessComponent},
-      {path: 'unauth', pathMatch: 'full', component: UnauthComponent},
+      {path: 'failed', component: FailedComponent},
+      {path: 'success', component: SuccessComponent},
+      {path: 'unauth', component: UnauthComponent},
+      {path: 'transport', component: TransportComponent},
+      {path: 'trans-in', component: TransInComponent},
+      {path: 'stock', component: StockComponent},
       {path: '**', pathMatch: 'full', component: NotfoundComponent}
     ],
   },
@@ -46,6 +57,12 @@ const routes: Routes = [
       {path: '', pathMatch: 'full', redirectTo: 'all'},
       {path: 'all', component: AllComponent},
       {path: 'item', component: ItemCardComponent},
+      {path: 'myorder', component: MyorderComponent},
+      {path: 'fresh', component: FreshComponent},
+      {path: 'grocery', component: GroceryComponent},
+      {path: 'cart', component: CartComponent},
+      {path: 'user-info', component: ProfileComponent},
+      {path: 'checkout/:id', component: CheckoutComponent}
     ]
   },
   {path: '**', pathMatch: 'full', component: NotfoundComponent}

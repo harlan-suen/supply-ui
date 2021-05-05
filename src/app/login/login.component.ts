@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { Login } from '../models/auth';
 import { AuthService } from '../service/auth.service';
 
@@ -27,17 +28,18 @@ export class LoginComponent implements OnInit {
       this.authService.login(data).subscribe({
         next: resp => {
           if (resp.code === 200) {
-            this.router.navigate(['/admin/user']);
+            this.authService.setToken(resp.data.token);
+            this.router.navigate(['/loading']);
           }else {
             console.log(resp.msg);
           }
         },
-        error: (error: any) => console.log(error.statusText),
+        error: (error: any) => this.msg.error('用户名或密码错误')
       });
     }
   }
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {}
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private msg: NzMessageService) {}
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({

@@ -12,14 +12,23 @@
       <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
         <li nz-submenu nzOpen nzTitle="管理中心" nzIcon="dashboard">
           <ul>
-            <li nz-menu-item nzMatchRouter>
-              <a routerLink="user">用户管理</a>
+            <li nz-menu-item nzMatchRouter *ngIf="role === 4">
+              <a routerLink="user" >用户管理</a>
             </li>
-            <li nz-menu-item nzMatchRouter>
+            <li nz-menu-item nzMatchRouter *ngIf="role === 3">
               <a routerLink="item">商品管理</a>
             </li>
-            <li nz-menu-item nzMatchRouter>
+            <li nz-menu-item nzMatchRouter *ngIf="role === 4">
+              <a routerLink="stock">库存管理</a>
+            </li>
+            <li nz-menu-item nzMatchRouter *ngIf="role !== 4">
               <a routerLink="order">订单管理</a>
+            </li>
+            <li nz-menu-item nzMatchRouter *ngIf="role == 4">
+              <a routerLink="transport">调配管理</a>
+            </li>
+            <li nz-menu-item nzMatchRouter *ngIf="role == 3">
+              <a routerLink="trans-in">调配中心</a>
             </li>
           </ul>
         </li>
@@ -27,9 +36,6 @@
           <ul>
             <li nz-menu-item nzMatchRouter>
               <a routerLink="profile">账号管理</a>
-            </li>
-            <li nz-menu-item nzMatchRouter>
-              <a routerLink="myorder">我的订单</a>
             </li>
           </ul>
         </li>
@@ -45,7 +51,7 @@
               ></i>
           </span>
           <a nz-dropdown [nzDropdownMenu]="menu" class="right-menu">
-            <nz-avatar nzSize="large" nzIcon="user"></nz-avatar>
+            <nz-avatar nzSize="large" nzIcon="user" [nzSrc]="user[0].imgUrl"></nz-avatar>
             <i nz-icon nzType="down"></i>
           </a>
           <nz-dropdown-menu #menu="nzDropdownMenu">

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from 'src/app/models/user';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { User, UpdateUserReq } from 'src/app/models/user';
+import { UserService } from 'src/app/service/user.service';
 
 @Component({
   selector: 'app-user',
@@ -7,19 +9,17 @@ import { User } from 'src/app/models/user';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-  editCache: { [key: string]: { edit: boolean; data: User } } = {};
+  editCache: { [key: number]: { edit: boolean; data: User } } = {};
   listOfData: User[] = [];
-  roleMap: Map<string, string> = new Map([
-    ['1', '居民'],
-    ['2', '社区负责人'],
-    ['3', '商超'],
-    ['4', '供应商'],
-  ]);
-  startEdit(id: string): void {
+  roleMap = this.userService.roleMap;
+  orgMap = this.userService.orgMap;
+  constructor(private userService: UserService, private msg: NzMessageService) {}
+
+  startEdit(id: number): void {
     this.editCache[id].edit = true;
   }
 
-  cancelEdit(id: string): void {
+  cancelEdit(id: number): void {
     const index = this.listOfData.findIndex(item => item.id === id);
     this.editCache[id] = {
       data: { ...this.listOfData[index] },
@@ -27,9 +27,26 @@ export class UserComponent implements OnInit {
     };
   }
 
-  saveEdit(id: string): void {
+  saveEdit(id: number): void {
     const index = this.listOfData.findIndex(item => item.id === id);
     Object.assign(this.listOfData[index], this.editCache[id].data);
+    const newUser: UpdateUserReq = {
+      username: this.editCache[id].data.username,
+      password: this.editCache[id].data.password,
+      phone: this.editCache[id].data.phone,
+      imgUrl: this.editCache[id].data.imgUrl
+    };
+    // tslint:disable-next-line: deprecation
+    this.userService.update(id, newUser).subscribe({
+      next: resp => {
+        if (resp.code === 200) {
+          this.msg.success('修改成功');
+        }else {
+          this.msg.error(resp.Msg);
+        }
+      },
+      error: err => console.log(err)
+  });
     this.editCache[id].edit = false;
   }
 
@@ -43,18 +60,13 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const data = [];
-    for (let i = 0; i < 100; i++) {
-      data.push({
-        id: `${i}`,
-        username: `harlan${i}`,
-        password: 'vs1234',
-        role: '1',
-        phone: '10086',
-        orgId: 10010,
-      });
-    }
-    this.listOfData = data;
-    this.updateEditCache();
+    // tslint:disable-next-line: deprecation
+    this.userService.getUsers().subscribe({
+      next: (resp: { data: User[]; }) => {
+        this.listOfData = resp.data;
+        this.updateEditCache();
+      },
+      error: (err: any) => this.msg.error(err)
+    });
   }
 }

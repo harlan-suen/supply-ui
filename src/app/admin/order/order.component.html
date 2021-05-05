@@ -1,28 +1,32 @@
-
-    <button nz-button (click)="addRow()" nzType="primary">Add</button>
-    <br />
-    <br />
-    <nz-table #editRowTable nzBordered [nzData]="listOfData">
+ <nz-table nzBordered nzTableLayout="fixed">
       <thead>
         <tr>
-          <th nzWidth="30%">Name</th>
-          <th>Age</th>
-          <th>Address</th>
-          <th>Action</th>
+          <th>订单号</th>
+          <th>下单时间</th>
+          <th>商品</th>
+          <th>社区</th>
+          <th>订单金额</th>
+          <th>订单状态</th>
+          <th>操作</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of editRowTable.data" class="editable-row">
+        <tr *ngFor="let order of listOfData">
+          <td>{{order.id}}</td>
+          <td>{{order.createdAt}}</td>
           <td>
-            <div class="editable-cell" [hidden]="editId === data.id" (click)="startEdit(data.id)">
-              {{ data.name }}
-            </div>
-            <input [hidden]="editId !== data.id" type="text" nz-input [(ngModel)]="data.name" (blur)="stopEdit()" />
+            <span *ngFor="let item of order.items">
+              {{item.name}} x {{item.number}}
+              <br>
+            </span>
           </td>
-          <td>{{ data.age }}</td>
-          <td>{{ data.address }}</td>
+          <td>{{orgMap.get(order.orgId)}}</td>
+          <td>¥{{order.amount}}元</td>
           <td>
-            <a nz-popconfirm nzPopconfirmTitle="Sure to delete?" (nzOnConfirm)="deleteRow(data.id)">Delete</a>
+            {{statusMap.get(order.orderStatus)}}
+          </td>
+          <td>
+            <button nz-button nzType="primary" *ngIf="order.orderStatus == 20" (click)="deliver(order.id)">发货</button>
           </td>
         </tr>
       </tbody>

@@ -36,7 +36,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminComponent } from './admin/admin.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
@@ -55,10 +55,19 @@ import { UnauthComponent } from './result/unauth/unauth.component';
 import { NotfoundComponent } from './result/notfound/notfound.component';
 import { FailedComponent } from './result/failed/failed.component';
 import { ProfileComponent } from './admin/profile/profile.component';
-import { MyorderComponent } from './admin/myorder/myorder.component';
+import { MyorderComponent } from './shopping/myorder/myorder.component';
 import { ShoppingComponent } from './shopping/shopping.component';
 import { AllComponent } from './shopping/all/all.component';
 import { ItemCardComponent } from './shopping/item-card/item-card.component';
+import { FreshComponent } from './shopping/fresh/fresh.component';
+import { GroceryComponent } from './shopping/grocery/grocery.component';
+import { CartComponent } from './shopping/cart/cart.component';
+import { CheckoutComponent } from './shopping/checkout/checkout.component';
+import { TokenInterceptor } from 'src/token.interceptor';
+import { LoadingComponent } from './loading/loading.component';
+import { TransportComponent } from './admin/transport/transport.component';
+import { TransInComponent } from './admin/trans-in/trans-in.component';
+import { StockComponent } from './admin/stock/stock.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -76,7 +85,15 @@ import { ItemCardComponent } from './shopping/item-card/item-card.component';
     MyorderComponent,
     ShoppingComponent,
     AllComponent,
-    ItemCardComponent
+    ItemCardComponent,
+    FreshComponent,
+    GroceryComponent,
+    CartComponent,
+    CheckoutComponent,
+    LoadingComponent,
+    TransportComponent,
+    TransInComponent,
+    StockComponent,
   ],
   imports: [
     // Ng Module
@@ -127,7 +144,13 @@ import { ItemCardComponent } from './shopping/item-card/item-card.component';
     NzCarouselModule,
     NzSpaceModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
