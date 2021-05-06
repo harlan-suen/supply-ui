@@ -23,7 +23,7 @@ import { LoadingComponent } from './loading/loading.component';
 import { TransportComponent } from './admin/transport/transport.component';
 import { TransInComponent } from './admin/trans-in/trans-in.component';
 import { StockComponent } from './admin/stock/stock.component';
-
+import { AuthGuardService as AuthGuard } from './service/auth-guard.service';
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: '/login'},
   {path: 'login', pathMatch: 'full', component: LoginComponent},
@@ -35,6 +35,7 @@ const routes: Routes = [
   {
     path: 'admin',
     component: AdminComponent,
+    canActivate: [AuthGuard],
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'profile'},
       {path: 'user', component: UserComponent},
@@ -53,6 +54,7 @@ const routes: Routes = [
   {
     path: 'shopping',
     component: ShoppingComponent,
+    canActivate: [AuthGuard],
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'all'},
       {path: 'all', component: AllComponent},

@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Register, Login } from '../models/auth';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { JwtHelperService } from '@auth0/angular-jwt';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -11,7 +13,8 @@ export class AuthService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    public jwtHelper: JwtHelperService
   ) { }
 
   register(data: Register): Observable<any> {
@@ -33,5 +36,13 @@ export class AuthService {
 
   loading(): Observable<any> {
     return this.http.get('/api/loading');
+  }
+
+  isAuthenticated(): boolean {
+    const token = localStorage.getItem('token');
+    if (token == null) {
+      return false;
+    }
+    return !this.jwtHelper.isTokenExpired(token);
   }
 }

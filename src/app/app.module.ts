@@ -68,6 +68,7 @@ import { LoadingComponent } from './loading/loading.component';
 import { TransportComponent } from './admin/transport/transport.component';
 import { TransInComponent } from './admin/trans-in/trans-in.component';
 import { StockComponent } from './admin/stock/stock.component';
+import { JwtHelperService, JWT_OPTIONS  } from '@auth0/angular-jwt';
 @NgModule({
   declarations: [
     AppComponent,
@@ -149,7 +150,9 @@ import { StockComponent } from './admin/stock/stock.component';
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    }
+    },
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    JwtHelperService
   ],
   bootstrap: [AppComponent]
 })

@@ -51,7 +51,7 @@
               ></i>
           </span>
           <a nz-dropdown [nzDropdownMenu]="menu" class="right-menu">
-            <nz-avatar nzSize="large" nzIcon="user" [nzSrc]="user[0].imgUrl"></nz-avatar>
+            <nz-avatar nzSize="large" nzIcon="user" [nzSrc]="user[0].imgUrl" *ngIf="user[0] !== undefined"></nz-avatar>
             <i nz-icon nzType="down"></i>
           </a>
           <nz-dropdown-menu #menu="nzDropdownMenu">

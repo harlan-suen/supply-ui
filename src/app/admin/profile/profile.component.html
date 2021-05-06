@@ -6,7 +6,7 @@
         (nzChange)="handleChange($event)"
         [nzShowUploadList]="false"
       >
-        <nz-avatar [nzSize]="64" nzIcon="user" [nzSrc]="data.imgUrl" ></nz-avatar>
+        <nz-avatar [nzSize]="64" nzIcon="user" [nzSrc]="data.imgUrl" *ngIf="data !== undefined"></nz-avatar>
         </nz-upload>
       </nz-form-item>
       <nz-form-item>
