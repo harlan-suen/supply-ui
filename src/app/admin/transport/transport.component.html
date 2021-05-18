@@ -69,7 +69,8 @@
             <td>{{marketMap.get(data.targetId)}}</td>
             <td>{{statusMap.get(data.status)}}</td>
             <td>
-                <button nz-button nzType="primary" (click)="send(data.id)" *ngIf="data.sourceId === 9999 && data.status === 10">发货</button>
+                <button nz-button nzType="primary" (click)="send(data.id)" *ngIf="data.sourceId === 9999 && data.status === 20">发货</button>
+                <button nz-button nzType="primary" nzDanger (click)="cancel(data.id)" *ngIf="data.status > 0 && data.status <= 20">取消</button>
             </td>
         </tr>
     </tbody>

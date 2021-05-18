@@ -19,6 +19,17 @@ export class UserComponent implements OnInit {
     this.editCache[id].edit = true;
   }
 
+  delete(id: number): void {
+    this.userService.delete(id).subscribe({
+      next: resp => {
+        if(resp.code === 200) {
+          this.listOfData = this.listOfData.filter(item => item.id === id);
+        }
+      },
+      error: () => this.msg.error('删除失败')
+    });
+  }
+
   cancelEdit(id: number): void {
     const index = this.listOfData.findIndex(item => item.id === id);
     this.editCache[id] = {

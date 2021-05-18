@@ -63,21 +63,24 @@
     <nz-select formControlName="role" id="role">
       <nz-option nzLabel="居民" nzValue="1"></nz-option>
       <nz-option nzLabel="社区负责人" nzValue="2"></nz-option>
-      <nz-option nzLabel="商超" nzValue="3"></nz-option>
-      <nz-option nzLabel="供应商" nzValue="4"></nz-option>
     </nz-select>
     </nz-form-control>
     </nz-form-item>
     <nz-form-item>
       <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="orgId"
-        >组织ID</nz-form-label
+        >社区</nz-form-label
       >
       <nz-form-control
         [nzSm]="14"
         [nzXs]="24"
-        nzErrorTip="请输入组织ID！"
+        nzErrorTip="请选择社区！"
       >
-        <input nz-input formControlName="orgId" id="orgId" />
+      <nz-select formControlName="orgId" id="orgId">
+        <nz-option nzLabel="华农东苑" nzValue="1001"></nz-option>
+        <nz-option nzLabel="华农西苑" nzValue="1002"></nz-option>
+        <nz-option nzLabel="华农南苑" nzValue="1003"></nz-option>
+        <nz-option nzLabel="华农北苑" nzValue="1004"></nz-option>
+      </nz-select>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>

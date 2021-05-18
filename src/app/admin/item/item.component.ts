@@ -3,7 +3,8 @@ import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Item } from 'src/app/models/item';
 import { ItemService } from 'src/app/service/item.service';
-
+import { NotificationService } from 'src/app/service/notification.service';
+import { Notifications  } from '../../models/notification';
 @Component({
   selector: 'app-item',
   templateUrl: './item.component.html',
@@ -27,7 +28,7 @@ export class ItemComponent implements OnInit {
   formatterRMB = (value: number) => `¥ ${value}`;
   parserRMB = (value: string) => value.replace('¥ ', '');
 
-  constructor(private msg: NzMessageService, private itemService: ItemService) {}
+  constructor(private msg: NzMessageService, private itemService: ItemService, private notificationService: NotificationService) {}
 
   editItem(id: number): void {
       const res = this.listOfData.find(item => item.id === id);
@@ -63,6 +64,22 @@ export class ItemComponent implements OnInit {
         }
       },
       error: err => this.msg.error(err.resp.msg)
+    });
+  }
+
+  reqTrans(item: string): void {
+    const noti: Notifications = {
+      sourceId: this.marketId,
+      targetId: 10010,
+      type: 2,
+      content: `[${this.marketId}]商超请求调配[${item}]`
+    }
+    this.notificationService.addNotification(noti).subscribe({
+      next: resp => {
+        if (resp.code === 200) {
+          this.msg.success('请求成功');
+        }
+      }
     });
   }
 

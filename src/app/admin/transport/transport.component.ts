@@ -69,20 +69,36 @@ export class TransportComponent implements OnInit {
   }
 
   send(id: number): void {
-    this.transportService.updateStatus(id, 20).subscribe({
+    this.transportService.updateStatus(id, 30).subscribe({
       next: resp => {
         if (resp.code === 200) {
           this.msg.success('发货成功');
+          const index = this.listOfData.findIndex(item => item.id === id);
+          this.listOfData[index].status = 30;
+        }
+      },
+      error: () => this.msg.error('请求错误')
+    });
+  }
+  cancel(id: number): void {
+    this.transportService.updateStatus(id, -1).subscribe({
+      next: resp => {
+        if (resp.code === 200) {
+          this.msg.success('取消成功');
+          const index = this.listOfData.findIndex(item => item.id === id);
+          this.listOfData[index].status = -1;
         }
       },
       error: () => this.msg.error('请求错误')
     });
   }
   receive(id: number): void {
-    this.transportService.updateStatus(id, 30).subscribe({
+    this.transportService.updateStatus(id, 40).subscribe({
       next: resp => {
         if (resp.code === 200) {
           this.msg.success('收货成功');
+          const index = this.listOfData.findIndex(item => item.id === id);
+          this.listOfData[index].status = 40;
         }
       },
       error: () => this.msg.error('请求错误')

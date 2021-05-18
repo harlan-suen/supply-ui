@@ -24,6 +24,19 @@ export class OrderComponent implements OnInit {
       next: resp => {
         if (resp.code === 200) {
           this.msg.success('发货成功');
+          const index = this.listOfData.findIndex(item => item.id === id);
+          this.listOfData[index].orderStatus = 30;
+        }
+      }
+    });
+  }
+  pickup(id: number): void {
+    this.orderService.updateStatus(id, 40).subscribe({
+      next: resp => {
+        if (resp.code === 200) {
+          this.msg.success('取货成功');
+          const index = this.listOfData.findIndex(item => item.id === id);
+          this.listOfData[index].orderStatus = 40;
         }
       }
     });

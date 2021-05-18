@@ -25,7 +25,7 @@ import { TransInComponent } from './admin/trans-in/trans-in.component';
 import { StockComponent } from './admin/stock/stock.component';
 import { AuthGuardService as AuthGuard } from './service/auth-guard.service';
 const routes: Routes = [
-  {path: '', pathMatch: 'full', redirectTo: '/login'},
+  {path: '', pathMatch: 'full', redirectTo: '/loading'},
   {path: 'login', pathMatch: 'full', component: LoginComponent},
   {path: 'register', pathMatch: 'full', component: RegisterComponent},
   {path: 'failed', pathMatch: 'full', component: FailedComponent},

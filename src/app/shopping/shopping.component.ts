@@ -12,8 +12,14 @@ import { CartService } from './cart.service';
 export class ShoppingComponent implements OnInit{
   cartCount = 0;
   user: any;
+  visible = false;
   constructor(private cartService: CartService, private userService: UserService, private itemService: ItemService) {}
-
+  open(): void{
+    this.visible = true;
+  }
+  close(): void{
+    this.visible = false;
+  }
   ngOnInit(): void {
     // tslint:disable-next-line: deprecation
     this.cartService.changeCount$.subscribe(res => this.cartCount = res);

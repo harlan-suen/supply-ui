@@ -16,8 +16,7 @@
           </li>
           <li nz-menu-item class="space"></li>
           <a nz-dropdown [nzDropdownMenu]="menu">
-            <nz-avatar nzSize="large" nzIcon="user"></nz-avatar>
-            <i nz-icon nzType="down"></i>
+            <nz-avatar nzSize="default" nzIcon="user" [nzSrc]="user.imgUrl" *ngIf="user !== undefined"></nz-avatar>
           </a>
           <nz-dropdown-menu #menu="nzDropdownMenu">
             <ul nz-menu nzSelectable>
@@ -29,6 +28,10 @@
               </li>
             </ul>
           </nz-dropdown-menu>
+          <span (click)="open()" style="margin-left:10px;">
+            消息
+            <nz-badge nzStandalone [nzCount]="5"></nz-badge>
+          </span>
           <li nz-menu-item>
             <a routerLink="cart">
               购物车
@@ -47,4 +50,10 @@
       </nz-content>
       <nz-footer>物资采购系统 ©2021 Implement By Angular</nz-footer>
     </nz-layout>
-  
+    <nz-drawer [nzClosable]="false" [nzVisible]="visible" nzPlacement="right" nzTitle="消息中心" (nzOnClose)="close()">
+      <ng-container *nzDrawerContent>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </ng-container>
+    </nz-drawer>

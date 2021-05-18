@@ -16,7 +16,7 @@ export class GroceryComponent implements OnInit {
   if (mid != null) {
     const marketId = +mid;
     // tslint:disable-next-line: deprecation
-    this.itemService.getItems(marketId).subscribe({
+    this.itemService.getItemsOnSale(marketId).subscribe({
       next: resp => {
         if (resp.code === 200) {
           console.log(resp.data);

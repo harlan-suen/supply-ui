@@ -16,6 +16,9 @@ export class ItemService {
   getItems(marketId: number): Observable<any> {
     return this.http.get(this.itemUrl + `/${marketId}`);
   }
+  getItemsOnSale(marketId: number): Observable<any> {
+    return this.http.get(this.itemUrl + `/${marketId}/on_sale`);
+  }
   getAll(): Observable<any> {
     return this.http.get(this.itemUrl);
   }

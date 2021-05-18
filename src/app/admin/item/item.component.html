@@ -17,13 +17,17 @@
               <span nz-typography nzType="danger">¥{{data.price}}</span>
             </td>
               <td *ngIf="data.stock >= 100">
-                <i nz-icon nzType="check-circle" nzTheme="twotone" nzTwotoneColor="yellowgreen" class="stock-icon"></i>库存充足
+                <i nz-icon nzType="check-circle" nzTheme="twotone" nzTwotoneColor="yellowgreen" class="stock-icon"></i>库存充足({{data.stock}})
               </td>
               <td *ngIf="data.stock >= 0 && data.stock < 100">
-                <i nz-icon nzType="alert" nzTheme="twotone" nzTwotoneColor="orange" class="stock-icon"></i>库存紧张
+                <i nz-icon nzType="alert" nzTheme="twotone" nzTwotoneColor="orange" class="stock-icon"></i>库存紧张({{data.stock}})
+                <br>
+                　<a (click)="reqTrans(data.name)">请求调配</a>
               </td>
               <td *ngIf="data.stock < 0">
-                <i nz-icon nzType="close-circle" nzTheme="twotone" nzTwotoneColor="red" class="stock-icon"></i>库存不足
+                <i nz-icon nzType="close-circle" nzTheme="twotone" nzTwotoneColor="red" class="stock-icon"></i>库存不足({{data.stock}})
+                <br>
+                　<a (click)="reqTrans(data.name)">请求调配</a>
               </td>
             <td nzAlgin="left" *ngIf="data.onSale == true">
               <button nz-button nzType="primary" (click)="editItem(data.id)">编辑商品</button>

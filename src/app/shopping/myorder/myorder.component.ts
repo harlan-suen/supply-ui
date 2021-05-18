@@ -31,6 +31,12 @@ export class MyorderComponent implements OnInit {
       case 4:
         this.listOfData = this.orders.filter(order => order.orderStatus === 40);
         return;
+      case 5:
+        this.listOfData = this.orders.filter(order => order.orderStatus === 50);
+        return;
+      case 6:
+        this.listOfData = this.orders.filter(order => order.orderStatus === -1);
+        return;
       default:
         this.listOfData = this.orders;
     }
@@ -40,15 +46,30 @@ export class MyorderComponent implements OnInit {
       next: resp => {
         if (resp.code === 200) {
           this.msg.success('支付成功');
+          const index = this.listOfData.findIndex(item => item.id === id);
+          this.listOfData[index].orderStatus = 20;
+        }
+      }
+    });
+  }
+  cancel(id: number): void {
+    this.orderService.updateStatus(id, -1).subscribe({
+      next: resp => {
+        if (resp.code === 200) {
+          this.msg.success('取消成功');
+          const index = this.listOfData.findIndex(item => item.id === id);
+          this.listOfData[index].orderStatus = -1;
         }
       }
     });
   }
   complete(id: number): void {
-    this.orderService.updateStatus(id, 40).subscribe({
+    this.orderService.updateStatus(id, 50).subscribe({
       next: resp => {
         if (resp.code === 200) {
           this.msg.success('已确认收货');
+          const index = this.listOfData.findIndex(item => item.id === id);
+          this.listOfData[index].orderStatus = 50;
         }
       }
     });

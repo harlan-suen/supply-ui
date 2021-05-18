@@ -14,8 +14,10 @@ export class OrderService {
   statusMap: Map<number, string> = new Map([
     [10, '待付款'],
     [20, '待发货'],
-    [30, '配送中'],
-    [40, '已完成']
+    [30, '待取货'],
+    [40, '配送中'],
+    [50, '已完成'],
+    [-1, '已取消']
   ]);
   constructor(private http: HttpClient) { }
 

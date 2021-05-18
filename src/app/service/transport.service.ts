@@ -12,9 +12,11 @@ export class TransportService {
   };
   transportUrl = 'api/guard/transport';
   statusMap: Map<number, string> = new Map([
-    [10, '待发货'],
-    [20, '配送中'],
-    [30, '已完成']
+    [10, '待确认'],
+    [20, '待发货'],
+    [30, '配送中'],
+    [40, '已完成'],
+    [-1, '已取消']
   ]);
   marketMap: Map<number, string> = new Map([
     [10008, '超市1'],
