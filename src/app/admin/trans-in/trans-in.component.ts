@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { CreateTransport, Transports } from 'src/app/models/transport';
+import { NotificationService } from 'src/app/service/notification.service';
 import { TransportService } from 'src/app/service/transport.service';
 
 @Component({
@@ -17,7 +18,8 @@ export class TransInComponent implements OnInit {
   index = 0;
   statusMap = this.transportService.statusMap;
   marketMap = this.transportService.marketMap;
-  constructor(private transportService: TransportService, private msg: NzMessageService) {}
+  constructor(private transportService: TransportService, private msg: NzMessageService,
+              private notificationService: NotificationService) {}
   ngOnInit(): void {
     const uid = localStorage.getItem('id');
     if (uid != null ) {
@@ -39,6 +41,7 @@ export class TransInComponent implements OnInit {
         }
       });
   }
+
 
   changeTab(index: number): void {
     if (index === 0) {
@@ -68,6 +71,7 @@ export class TransInComponent implements OnInit {
           this.msg.success('发货成功');
           const index = this.listOfData.findIndex(item => item.id === id);
           this.listOfData[index].status = 30;
+          this.notificationService.sendNotification(this.id, this.listOfData[index].targetId, `调配单[${id}已发货]`);
         }
       },
       error: () => this.msg.error('请求错误')
@@ -81,6 +85,7 @@ export class TransInComponent implements OnInit {
           this.msg.success('收货成功');
           const index = this.listOfData.findIndex(item => item.id === id);
           this.listOfData[index].status = 40;
+          this.notificationService.sendNotification(this.id, this.listOfData[index].sourceId, `调配单[${id}已收货]`);
         }
       },
       error: () => this.msg.error('请求错误')

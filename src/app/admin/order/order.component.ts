@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { Notifications } from 'src/app/models/notification';
 import { Order } from 'src/app/models/order';
+import { NotificationService } from 'src/app/service/notification.service';
 import { OrderService } from 'src/app/service/order.service';
 import { UserService } from 'src/app/service/user.service';
 
@@ -18,7 +20,8 @@ export class OrderComponent implements OnInit {
   oid = 0;
   statusMap = this.orderService.statusMap;
   orgMap = this.userService.orgMap;
-  constructor(private orderService: OrderService, private msg: NzMessageService, private userService: UserService) {}
+  constructor(private orderService: OrderService, private msg: NzMessageService,
+              private userService: UserService, private notificationService: NotificationService) {}
   deliver(id: number): void {
     this.orderService.updateStatus(id, 30).subscribe({
       next: resp => {
@@ -26,6 +29,7 @@ export class OrderComponent implements OnInit {
           this.msg.success('发货成功');
           const index = this.listOfData.findIndex(item => item.id === id);
           this.listOfData[index].orderStatus = 30;
+          this.sendNotification(this.listOfData[index].userId, `订单[${id}]已发货`);
         }
       }
     });
@@ -37,9 +41,20 @@ export class OrderComponent implements OnInit {
           this.msg.success('取货成功');
           const index = this.listOfData.findIndex(item => item.id === id);
           this.listOfData[index].orderStatus = 40;
+          this.sendNotification(this.listOfData[index].userId, `订单[${id}]已取货`);
         }
       }
     });
+  }
+
+  sendNotification(receiverId: number, msg: string): void {
+    const noti: Notifications = {
+      sourceId: this.uid,
+      targetId: receiverId,
+      type: 2,
+      content: msg
+    }
+    this.notificationService.addNotification(noti).subscribe();
   }
   ngOnInit(): void {
     const id = localStorage.getItem('id');

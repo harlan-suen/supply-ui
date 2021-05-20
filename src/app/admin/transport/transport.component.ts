@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { Notifications } from 'src/app/models/notification';
 import { CreateTransport, Transports } from 'src/app/models/transport';
+import { NotificationService } from 'src/app/service/notification.service';
 import { TransportService } from 'src/app/service/transport.service';
 
 @Component({
@@ -21,7 +23,8 @@ export class TransportComponent implements OnInit {
   isVisible = false;
   statusMap = this.transportService.statusMap;
   marketMap = this.transportService.marketMap;
-  constructor(private transportService: TransportService, private msg: NzMessageService) {}
+  constructor(private transportService: TransportService, private msg: NzMessageService, 
+              private notificationService: NotificationService) {}
   ngOnInit(): void {
     const uid = localStorage.getItem('id');
     if (uid != null ) {
@@ -39,6 +42,17 @@ export class TransportComponent implements OnInit {
         }
       });
   }
+
+  sendNotification(receiverId: number, msg: string): void {
+    const noti: Notifications = {
+      sourceId: this.id,
+      targetId: receiverId,
+      type: 2,
+      content: msg
+    };
+    this.notificationService.addNotification(noti).subscribe();
+  }
+
   addTransport(): void {
     this.modalData = {
       sourceId: 0,
@@ -75,6 +89,7 @@ export class TransportComponent implements OnInit {
           this.msg.success('发货成功');
           const index = this.listOfData.findIndex(item => item.id === id);
           this.listOfData[index].status = 30;
+          this.sendNotification(this.listOfData[index].targetId, `调配单[${id}已发货]`);
         }
       },
       error: () => this.msg.error('请求错误')
@@ -87,18 +102,6 @@ export class TransportComponent implements OnInit {
           this.msg.success('取消成功');
           const index = this.listOfData.findIndex(item => item.id === id);
           this.listOfData[index].status = -1;
-        }
-      },
-      error: () => this.msg.error('请求错误')
-    });
-  }
-  receive(id: number): void {
-    this.transportService.updateStatus(id, 40).subscribe({
-      next: resp => {
-        if (resp.code === 200) {
-          this.msg.success('收货成功');
-          const index = this.listOfData.findIndex(item => item.id === id);
-          this.listOfData[index].status = 40;
         }
       },
       error: () => this.msg.error('请求错误')

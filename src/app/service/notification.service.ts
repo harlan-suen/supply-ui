@@ -22,6 +22,19 @@ export class NotificationService {
   ]);
   constructor(private http: HttpClient) { }
 
+  sendNotification(senderId: number, receiverId: number, msg: string): void {
+    if (receiverId === 9999) {
+      receiverId = 10010;
+    }
+    const noti: Notifications = {
+      sourceId: senderId,
+      targetId: receiverId,
+      type: 2,
+      content: msg
+    };
+    this.addNotification(noti).subscribe();
+  }
+
   getNotification(id: number): Observable<any> {
     return this.http.get(`${this.url}/${id}`);
   }

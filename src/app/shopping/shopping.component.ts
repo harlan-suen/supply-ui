@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Item } from '../models/item';
-import { ItemService } from '../service/item.service';
+import { Notifications } from '../models/notification';
+import { NotificationService } from '../service/notification.service';
 import { UserService } from '../service/user.service';
 import { CartService } from './cart.service';
 
@@ -12,25 +12,52 @@ import { CartService } from './cart.service';
 export class ShoppingComponent implements OnInit{
   cartCount = 0;
   user: any;
+  id = 0;
   visible = false;
-  constructor(private cartService: CartService, private userService: UserService, private itemService: ItemService) {}
+  notification: Notifications[] = [];
+  typeMap = this.notificationService.typeMap;
+  typeColorMap = this.notificationService.typeColorMap;
+  constructor(private cartService: CartService, private userService: UserService, private notificationService: NotificationService) {}
   open(): void{
     this.visible = true;
   }
   close(): void{
     this.visible = false;
   }
+  remove(c: string): void {
+    this.notification = this.notification.filter(n => n.content !== c);
+  }
+  removeAll(): void {
+    this.notification = [];
+  }
+  refresh(): void {
+    this.notificationService.getNotification(this.id).subscribe({
+      next: resp => {
+        if (resp.code === 200) {
+          this.notification = resp.data;
+        }
+      }
+    });
+  }
   ngOnInit(): void {
     // tslint:disable-next-line: deprecation
     this.cartService.changeCount$.subscribe(res => this.cartCount = res);
-    const id = localStorage.getItem('id');
-    if (id != null) {
-      const userId: number = +id;
+    const i = localStorage.getItem('id');
+    if (i != null) {
+      this.id = +i;
       // tslint:disable-next-line: deprecation
-      this.userService.getUserById(userId).subscribe({
+      this.userService.getUserById(this.id).subscribe({
         next: resp => {
           if (resp.code === 200) {
             this.user = resp.data;
+          }
+        }
+      });
+
+      this.notificationService.getNotification(this.id).subscribe({
+        next: resp => {
+          if (resp.code === 200) {
+            this.notification = resp.data;
           }
         }
       });
