@@ -5,6 +5,10 @@ import { Order } from 'src/app/models/order';
 import { NotificationService } from 'src/app/service/notification.service';
 import { OrderService } from 'src/app/service/order.service';
 import { UserService } from 'src/app/service/user.service';
+import { registerLocaleData } from '@angular/common';
+import zh from '@angular/common/locales/zh'; registerLocaleData(zh);
+
+
 
 @Component({
   selector: 'app-order',
@@ -20,6 +24,10 @@ export class OrderComponent implements OnInit {
   oid = 0;
   statusMap = this.orderService.statusMap;
   orgMap = this.userService.orgMap;
+  selectName: number | null = null;
+  selectOrg = 0;
+  dateFrom = 0;
+  dateTo = 0;
   constructor(private orderService: OrderService, private msg: NzMessageService,
               private userService: UserService, private notificationService: NotificationService) {}
   deliver(id: number): void {
@@ -55,6 +63,9 @@ export class OrderComponent implements OnInit {
       content: msg
     }
     this.notificationService.addNotification(noti).subscribe();
+  }
+  onChange(result: Date): void {
+    console.log('onChange: ', result);
   }
   ngOnInit(): void {
     const id = localStorage.getItem('id');
@@ -94,5 +105,28 @@ export class OrderComponent implements OnInit {
         }
       });
     }
+  }
+
+  search(): void {
+    this.listOfData = this.orders;
+    if (this.selectName !== null) {
+      this.listOfData = this.listOfData.filter(item => item.userId == this.selectName);
+    }
+    if (this.selectOrg !== 0) {
+      this.listOfData = this.listOfData.filter(item => item.orgId === this.selectOrg);
+    }
+    if (this.dateFrom !== 0) {
+      this.listOfData = this.listOfData.filter(item => Date.parse(item.createdAt) > this.dateFrom);
+    }
+    if (this.dateTo !== 0) {
+      this.listOfData = this.listOfData.filter(item => Date.parse(item.createdAt) < this.dateTo);
+    }
+  }
+
+  formatDate(date: string): string {
+    const d = new Date(Date.parse(date));
+    return d.getFullYear() + '-' + (d.getMonth() + 1 ) + '-' + d.getUTCDate() + ' '
+    + d.getHours().toString().padStart(2, '0') + ':' + d.getMinutes().toString().padStart(2, '0') + ':'
+    + d.getSeconds().toString().padStart(2, '0');
   }
 }

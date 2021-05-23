@@ -143,7 +143,8 @@ import { JwtHelperService, JWT_OPTIONS  } from '@auth0/angular-jwt';
     NzSkeletonModule,
     NzTypographyModule,
     NzCarouselModule,
-    NzSpaceModule
+    NzSpaceModule,
+    NzDatePickerModule
   ],
   providers: [
     {

@@ -12,6 +12,7 @@ import { TransportService } from 'src/app/service/transport.service';
 })
 export class TransportComponent implements OnInit {
   listOfData: Transports[] = [];
+  transports: Transports[] = [];
   id = 0;
   role = 0;
   modalData: CreateTransport = {
@@ -23,6 +24,9 @@ export class TransportComponent implements OnInit {
   isVisible = false;
   statusMap = this.transportService.statusMap;
   marketMap = this.transportService.marketMap;
+  selectName = '';
+  selectSource = 0;
+  selectTarget = 0;
   constructor(private transportService: TransportService, private msg: NzMessageService, 
               private notificationService: NotificationService) {}
   ngOnInit(): void {
@@ -38,6 +42,7 @@ export class TransportComponent implements OnInit {
         next: resp => {
           if (resp.code === 200) {
             this.listOfData = resp.data;
+            this.transports = resp.data;
           }
         }
       });
@@ -106,5 +111,18 @@ export class TransportComponent implements OnInit {
       },
       error: () => this.msg.error('请求错误')
     });
+  }
+
+  search(): void {
+    this.listOfData = this.transports;
+    if (this.selectSource !== 0) {
+      this.listOfData = this.listOfData.filter(item => item.sourceId === this.selectSource);
+    }
+    if (this.selectName !== '') {
+      this.listOfData = this.listOfData.filter(item => item.item === this.selectName);
+    }
+    if (this.selectTarget !== 0) {
+      this.listOfData = this.listOfData.filter(item => item.targetId === this.selectTarget);
+    }
   }
 }

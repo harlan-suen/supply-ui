@@ -1,4 +1,22 @@
-
+<div nz-row>
+  <div nz-col nzSpan="3">
+    <input nz-input placeholder="用户名" [(ngModel)]="selectName">
+  </div>
+  <div nz-col nzSpan="3">
+    <input nz-input placeholder="手机号" [(ngModel)]="selectPhone">
+  </div>
+  <div nz-col nzSpan="3">
+    <nz-select nzAllowClear nzPlaceHolder="用户类型" [(ngModel)]="selectType">
+      <nz-option nzLabel="居民" [nzValue]="1"></nz-option>
+      <nz-option nzLabel="社区负责人" [nzValue]="2"></nz-option>
+      <nz-option nzLabel="商超" [nzValue]="3"></nz-option>
+      <nz-option nzLabel="供应商" [nzValue]="4"></nz-option>
+    </nz-select>
+  </div>
+  <div nz-col nzSpan="6">
+    <button nz-button nzType="primary" (click)="search()">查询</button>
+  </div>
+</div>
     <nz-table #editRowTable nzBordered [nzData]="listOfData" nzTableLayout="fixed">
       <thead>
         <tr>
@@ -16,7 +34,7 @@
           <ng-container *ngIf="!editCache[data.id].edit; else editTemplate">
             <td>{{ data.id }}</td>
             <td>{{ data.username }}</td>
-            <td>{{ data.password }}</td>
+            <td>*********</td>
             <td>{{ roleMap.get(data.role) }}</td>
             <td>{{ data.phone }}</td>
             <td>{{ orgMap.get(data.orgId) }}</td>

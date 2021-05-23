@@ -1,7 +1,30 @@
 <div *ngIf="role === 4">
-    <button nz-button nzType="primary" (click)="addTransport()">
-        <i nz-icon nzType="plus"></i>新建调配
-    </button>
+  <button nz-button nzType="primary" (click)="addTransport()">
+      <i nz-icon nzType="plus"></i>新建调配
+  </button>
+</div>
+<br>
+<div nz-row>
+  <div nz-col nzSpan="3">
+    <input nz-input placeholder="商品" [(ngModel)]="selectName">
+  </div>
+  <div nz-col nzSpan="2">
+    <nz-select nzAllowClear nzPlaceHolder="调出地" [(ngModel)]="selectSource">
+      <nz-option nzLabel="商超1" [nzValue]="10008"></nz-option>
+      <nz-option nzLabel="商超2" [nzValue]="10009"></nz-option>
+      <nz-option nzLabel="供应商" [nzValue]="9999"></nz-option>
+    </nz-select>
+  </div>
+  <div nz-col nzSpan="2">
+    <nz-select nzAllowClear nzPlaceHolder="调入地" [(ngModel)]="selectTarget">
+      <nz-option nzLabel="商超1" [nzValue]="10008"></nz-option>
+      <nz-option nzLabel="商超2" [nzValue]="10009"></nz-option>
+      <nz-option nzLabel="供应商" [nzValue]="9999"></nz-option>
+    </nz-select>
+  </div>
+  <div nz-col nzSpan="6">
+    <button nz-button nzType="primary" (click)="search()">查询</button>
+  </div>
 </div>
 <nz-modal [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
     <ng-container *nzModalContent>
@@ -41,6 +64,7 @@
             name="quantity"
             [(ngModel)]="modalData.quantity"
             [nzStep]="1"
+            [nzMin]="0"
           ></nz-input-number>
           </nz-form-control>
         </nz-form-item>

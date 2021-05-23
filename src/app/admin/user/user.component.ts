@@ -10,9 +10,13 @@ import { UserService } from 'src/app/service/user.service';
 })
 export class UserComponent implements OnInit {
   editCache: { [key: number]: { edit: boolean; data: User } } = {};
+  users: User[] = [];
   listOfData: User[] = [];
   roleMap = this.userService.roleMap;
   orgMap = this.userService.orgMap;
+  selectName = '';
+  selectType = 0;
+  selectPhone = '';
   constructor(private userService: UserService, private msg: NzMessageService) {}
 
   startEdit(id: number): void {
@@ -75,9 +79,23 @@ export class UserComponent implements OnInit {
     this.userService.getUsers().subscribe({
       next: (resp: { data: User[]; }) => {
         this.listOfData = resp.data;
+        this.users = resp.data;
         this.updateEditCache();
       },
       error: (err: any) => this.msg.error(err)
     });
+  }
+
+  search(): void {
+    this.listOfData = this.users;
+    if (this.selectType !== 0) {
+      this.listOfData = this.listOfData.filter(item => item.role === this.selectType);
+    }
+    if (this.selectName !== '') {
+      this.listOfData = this.listOfData.filter(item => item.username === this.selectName);
+    }
+    if (this.selectPhone !== '') {
+      this.listOfData = this.listOfData.filter(item => item.phone === this.selectPhone);
+    }
   }
 }
